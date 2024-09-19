@@ -1,24 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
+using Debug = System.Diagnostics.Debug;
 
 public class playercont : MonoBehaviour
 {
     //comps
     public Rigidbody RB;
+    public LineRenderer laserLine;
+    public ParticleSystem gunps;
     //floats
     public float MouseSensitivity = 3;
     public float WalkSpeed = 10;
+    //headbob stuff
+    public float transitionSpeed = 10f;
+    public float bobSpeed = 4.8f;
+    public float bobAmount = 0.05f;
+    float timer = Mathf.PI / 2;
+    //hitscan stuff
+    public float fireRate = 0.25f;
+    public float nextFire;
+    public WaitForSeconds shotDuration = new WaitForSeconds(0.07f);
+    public int gunDamage = 1;
+    public Transform gunEnd;
+    public float weaponRange = 50f; 
     //objs
     public Camera Eyes;
-    public bool gamerunning;
     public Vector3 camPos;
-    public Vector3 restPosition; //local position where your camera would rest when it's not bobbing.
-    public float transitionSpeed = 10f; //smooths out the transition from moving to not moving.
-    public float bobSpeed = 4.8f; //how quickly the player's head bobs.
-    public float bobAmount = 0.05f; //how dramatic the bob is.
-    //float
-    float timer = Mathf.PI / 2; //initialized as this value because this is where sin = 1. So, this will make the camera always start at the crest of the sin wave, simulating someone picking up their foot and starting to walk--you experience a bob upwards when you start walking as your foot pushes off the ground, the left and right bobs come as you walk.
+    public Vector3 restPosition;
+    //ints
     
     void Awake()
     {
@@ -100,5 +112,39 @@ public class playercont : MonoBehaviour
                 //plug back in
                 RB.velocity = move;
             }
+            
+            if (Input.GetMouseButtonDown(1) && Time.time > nextFire)
+            {
+                nextFire = Time.time + fireRate;
+                StartCoroutine (ShotEffect());
+                Vector3 rayOrigin = Eyes.ViewportToWorldPoint (new Vector3(0.5f, 0.5f, 0.0f));
+                RaycastHit hit;
+                gunps.Emit(10);
+                laserLine.SetPosition (0, gunEnd.position);
+
+                //check if hit anything
+                if (Physics.Raycast (rayOrigin, Eyes.transform.forward, out hit, weaponRange))
+                {
+                    laserLine.SetPosition (1, hit.point);
+                    targetcont targ = hit.collider.GetComponent<targetcont>();
+                    if (targ != null)
+                    {
+                        targ.hit();
+                    }
+                }
+                else
+                {
+                    laserLine.SetPosition (1, rayOrigin + (Eyes.transform.forward * weaponRange));
+                }
+            }
+    }
+
+    public IEnumerator ShotEffect()
+    {
+        //gunAudio.Play ();
+        laserLine.enabled = true;
+        yield return shotDuration;
+        laserLine.enabled = false;
     }
 }
+
