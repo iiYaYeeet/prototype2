@@ -49,8 +49,21 @@
      <Compile Include="Assets\scripts\targetcont.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\prefabs" />
+     <Folder Include="Assets\materials\degraded-concrete-unity" />
+     <Folder Include="Assets\materials\human-skin1-unity" />
+     <Folder Include="Assets\materials\reinforced-metal-unity" />
+     <Folder Include="Assets\materials\vines-unity" />
      <Folder Include="Assets\Scenes" />
+     <Folder Include="Assets\materials\carbon-fiber-unity" />
+     <Folder Include="Assets\Tree 1_Textures" />
      <Folder Include="Assets\scripts" />
+     <Folder Include="Assets\materials\black-leather-unity 1" />
+     <Folder Include="Assets\materials" />
+     <Folder Include="Assets\materials\black-leather-unity" />
+     <Folder Include="Assets\materials\streaky-plywood-unity\streaky-plywood-unity" />
+     <Folder Include="Assets\materials\streaky-plywood-unity" />
+     <Folder Include="Assets\Tree_Textures" />
+     <Folder Include="Assets\materials\alley-brick-wall-unity" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.9f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>
