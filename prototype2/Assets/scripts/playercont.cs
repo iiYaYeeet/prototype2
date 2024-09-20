@@ -119,7 +119,7 @@ public class playercont : MonoBehaviour
                 StartCoroutine (ShotEffect());
                 Vector3 rayOrigin = Eyes.ViewportToWorldPoint (new Vector3(0.5f, 0.5f, 0.0f));
                 RaycastHit hit;
-                gunps.Emit(10);
+                gunps.Emit(5);
                 laserLine.SetPosition (0, gunEnd.position);
 
                 //check if hit anything
