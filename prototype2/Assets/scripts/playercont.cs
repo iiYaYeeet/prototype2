@@ -18,6 +18,8 @@ public class playercont : MonoBehaviour
     //upgradebools
     public bool fullautoupgrade;
     public bool infammmo;
+    //otherbools
+    public bool canshoot = true;
     //headbob stuff
     public float transitionSpeed = 10f;
     public float bobSpeed = 4.8f;
@@ -116,7 +118,7 @@ public class playercont : MonoBehaviour
                 RB.velocity = move;
             }
 
-            if (Input.GetMouseButtonDown(0) && Time.time > nextFire && ammo >= 0)
+            if (Input.GetMouseButtonDown(0) && Time.time > nextFire && ammo >= 0 && canshoot)
             {
                 nextFire = Time.time + fireRate;
                 StartCoroutine (ShotEffect());
@@ -143,7 +145,7 @@ public class playercont : MonoBehaviour
                     laserLine.SetPosition (1, rayOrigin + (Eyes.transform.forward * weaponRange));
                 }
             }
-            if (Input.GetMouseButton(0) && Time.time > nextFire && ammo >= 0 && fullautoupgrade)
+            if (Input.GetMouseButton(0) && Time.time > nextFire && ammo >= 0 && fullautoupgrade && canshoot)
             {
                 nextFire = Time.time + fireRate;
                 StartCoroutine (ShotEffect());
@@ -168,6 +170,11 @@ public class playercont : MonoBehaviour
                     laserLine.SetPosition (1, rayOrigin + (Eyes.transform.forward * weaponRange));
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                StartCoroutine(reload());
+            }
     }
 
     public IEnumerator ShotEffect()
@@ -176,6 +183,15 @@ public class playercont : MonoBehaviour
         laserLine.enabled = true;
         yield return shotDuration;
         laserLine.enabled = false;
+    }
+
+    public IEnumerator reload()
+    {
+        //playsound
+        canshoot = false;
+        yield return new WaitForSeconds(2);
+        canshoot = true;
+        ammo = 30;
     }
 }
 
