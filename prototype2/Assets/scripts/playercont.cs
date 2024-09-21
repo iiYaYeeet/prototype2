@@ -14,13 +14,17 @@ public class playercont : MonoBehaviour
     //floats
     public float MouseSensitivity = 3;
     public float WalkSpeed = 10;
+    public float ammo = 30;
+    //upgradebools
+    public bool fullautoupgrade;
+    public bool infammmo;
     //headbob stuff
     public float transitionSpeed = 10f;
     public float bobSpeed = 4.8f;
     public float bobAmount = 0.05f;
     float timer = Mathf.PI / 2;
     //hitscan stuff
-    public float fireRate = 0.25f;
+    public float fireRate = 0.15f;
     public float nextFire;
     public WaitForSeconds shotDuration = new WaitForSeconds(0.07f);
     public int gunDamage = 1;
@@ -30,7 +34,6 @@ public class playercont : MonoBehaviour
     public Camera Eyes;
     public Vector3 camPos;
     public Vector3 restPosition;
-    //ints
     
     void Awake()
     {
@@ -112,8 +115,8 @@ public class playercont : MonoBehaviour
                 //plug back in
                 RB.velocity = move;
             }
-            
-            if (Input.GetMouseButtonDown(1) && Time.time > nextFire)
+
+            if (Input.GetMouseButtonDown(0) && Time.time > nextFire && ammo >= 0)
             {
                 nextFire = Time.time + fireRate;
                 StartCoroutine (ShotEffect());
@@ -121,6 +124,34 @@ public class playercont : MonoBehaviour
                 RaycastHit hit;
                 gunps.Emit(5);
                 laserLine.SetPosition (0, gunEnd.position);
+                if (!infammmo)
+                {
+                    ammo--;
+                }
+                //check if hit anything
+                if (Physics.Raycast (rayOrigin, Eyes.transform.forward, out hit, weaponRange))
+                {
+                    laserLine.SetPosition (1, hit.point);
+                    targetcont targ = hit.collider.GetComponent<targetcont>();
+                    if (targ != null)
+                    {
+                        targ.hit();
+                    }
+                }
+                else
+                {
+                    laserLine.SetPosition (1, rayOrigin + (Eyes.transform.forward * weaponRange));
+                }
+            }
+            if (Input.GetMouseButton(0) && Time.time > nextFire && ammo >= 0 && fullautoupgrade)
+            {
+                nextFire = Time.time + fireRate;
+                StartCoroutine (ShotEffect());
+                Vector3 rayOrigin = Eyes.ViewportToWorldPoint (new Vector3(0.5f, 0.5f, 0.0f));
+                RaycastHit hit;
+                gunps.Emit(5);
+                laserLine.SetPosition (0, gunEnd.position);
+                ammo--;
 
                 //check if hit anything
                 if (Physics.Raycast (rayOrigin, Eyes.transform.forward, out hit, weaponRange))
