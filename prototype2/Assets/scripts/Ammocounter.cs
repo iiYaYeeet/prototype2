@@ -5,9 +5,12 @@ using UnityEngine;
 public class Ammocounter : MonoBehaviour
 {
     public playercont player;
-    public TMPro.TMP_Text ammotext;
+    public timecontroller TC;
+    public TMPro.TMP_Text ammotext,timetext;
     void Update()
     {
         ammotext.text = "Ammo:" + player.ammo;
+        timetext.text = "Time:" +
+                        "" + TC.watch.Elapsed;
     }
 }

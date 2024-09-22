@@ -7,6 +7,8 @@ public class targetcont : MonoBehaviour
 {
     public bool washit;
     public MeshRenderer mesh1, mesh2;
+    public AudioSource AS;
+    public AudioClip AC;
     public void hit()
     {
         if (washit == false)
@@ -14,6 +16,7 @@ public class targetcont : MonoBehaviour
             mesh1.enabled = true;
             mesh2.enabled = true;
             washit = true;
+            AS.PlayOneShot(AC);
         }
     }
 }

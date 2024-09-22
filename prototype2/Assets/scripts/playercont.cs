@@ -11,6 +11,9 @@ public class playercont : MonoBehaviour
     public Rigidbody RB;
     public LineRenderer laserLine;
     public ParticleSystem gunps;
+    public AudioSource AS;
+    public AudioClip reloadclip;
+    public AudioClip Shoot;
     //floats
     public float MouseSensitivity = 3;
     public float WalkSpeed = 10;
@@ -175,11 +178,16 @@ public class playercont : MonoBehaviour
             {
                 StartCoroutine(reload());
             }
+            
+            if (Input.GetKeyDown(KeyCode.Backslash))
+            {
+                StartCoroutine(reload());
+            }
     }
 
     public IEnumerator ShotEffect()
     {
-        //gunAudio.Play ();
+        AS.PlayOneShot(Shoot);
         laserLine.enabled = true;
         yield return shotDuration;
         laserLine.enabled = false;
@@ -187,7 +195,7 @@ public class playercont : MonoBehaviour
 
     public IEnumerator reload()
     {
-        //playsound
+        AS.PlayOneShot(reloadclip);
         canshoot = false;
         yield return new WaitForSeconds(2);
         canshoot = true;
