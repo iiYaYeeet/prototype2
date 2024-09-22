@@ -148,7 +148,7 @@ public class playercont : MonoBehaviour
                     laserLine.SetPosition (1, rayOrigin + (Eyes.transform.forward * weaponRange));
                 }
             }
-            if (Input.GetMouseButton(0) && Time.time > nextFire && ammo >= 0 && fullautoupgrade && canshoot)
+            if (Input.GetMouseButton(0) && Time.time > nextFire && ammo >= 1 && fullautoupgrade && canshoot)
             {
                 nextFire = Time.time + fireRate;
                 StartCoroutine (ShotEffect());
